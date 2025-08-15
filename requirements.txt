@@ -1,0 +1,5 @@
+tweepy
+gspread
+oauth2client
+python-dotenv
+pandas
