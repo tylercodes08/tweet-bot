@@ -2,7 +2,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import tweepy
 import random
-import os
+import os, json
 from dotenv import load_dotenv
 
 # Load Twitter API credentials from environment variables
@@ -14,8 +14,9 @@ client = tweepy.Client(
     access_token_secret=os.getenv("ACCESS_TOKEN_SECRET")
 )
 
-with open("service_account.json", "w") as f:
-    f.write(os.getenv("JSON"))
+with open("service_account.json", "r") as f:
+    creds = json.load(f)
+
 
 # Google Sheets setup
 scope = ["https://spreadsheets.google.com/feeds",
