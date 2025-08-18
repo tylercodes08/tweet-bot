@@ -17,15 +17,12 @@ client = tweepy.Client(
 with open("service_account.json", "w") as f:
     f.write(os.getenv("JSON"))
 
-
-json = os.getenv("JSON")
-
 # Google Sheets setup
 scope = ["https://spreadsheets.google.com/feeds",
          "https://www.googleapis.com/auth/drive"]
 
 # Use the JSON key file from GitHub Actions secret or local file
-creds = ServiceAccountCredentials.from_json_keyfile_name(json, scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name("service_account.json", scope)
 gc = gspread.authorize(creds)
 
 # Open your Google Sheet by name
