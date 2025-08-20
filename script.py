@@ -4,6 +4,17 @@ import tweepy
 import random
 import os, json
 from dotenv import load_dotenv
+import time
+
+
+# Random minute within the hour (0–59)
+random_minute = random.randint(0, 59)
+
+# Wait until that minute before posting
+current_minute = time.gmtime().tm_min
+sleep_seconds = (random_minute - current_minute) * 60
+if sleep_seconds > 0:
+    time.sleep(sleep_seconds)
 
 # Load Twitter API credentials from environment variables
 load_dotenv()
@@ -40,7 +51,7 @@ for i, row in enumerate(data):
         extras = row.get("Extra", "").split(",")  # extra hashtags or phrases
 
         # Add hashtags and two random extras if available
-        random_extras = " ".join(random.sample(extras, min(2, len(extras)))) if extras else ""
+        random_extras = " ".join(random.sample(extras, 2)) if extras else ""
         tweet_text += "\n\n" + hashtags + " " + random_extras
 
         try:
