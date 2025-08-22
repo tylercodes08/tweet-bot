@@ -53,11 +53,15 @@ for i, row in enumerate(data):
         # Remove the main hashtag from extras to avoid duplication
         filtered_extras = list(set(extras) - {hashtag})
 
-        # Randomly select up to 2 extras (if available)
-        selected_extras = random.sample(filtered_extras, k=min(3, len(filtered_extras)))
+        # Randomly select exactly 2 extras if possible
+        if len(filtered_extras) >= 2:
+            selected_extras = random.sample(filtered_extras, k=2)
+        else:
+            selected_extras = ""  # If less than 2 available, use nothing
 
-        # Build the final hashtag string
+        # Always include the main hashtag
         all_hashtags = [hashtag] + selected_extras
+
         tweet_text += "\n\n" + " ".join(all_hashtags)
 
 
