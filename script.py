@@ -47,12 +47,19 @@ data = sheet.get_all_records()
 for i, row in enumerate(data):
     if str(row["Posted"]).strip().upper() != "TRUE":
         tweet_text = row["Tweet Text"]
-        hashtags = row.get("Hashtags", "")
-        extras = row.get("Extra", "").split(",")  # extra hashtags or phrases
+        hashtag = row.get("Hashtags", "")
+        extras = [tag.strip() for tag in row.get("Extra", "").split(",") if tag.strip()]
 
-        # Add hashtags and two random extras if available
-        random_extras = " ".join(random.sample(extras, 2)) if extras else ""
-        tweet_text += "\n\n" + hashtags + " " + random_extras
+        # Remove the main hashtag from extras to avoid duplication
+        filtered_extras = list(set(extras) - {hashtag})
+
+        # Randomly select up to 2 extras (if available)
+        selected_extras = random.sample(filtered_extras, k=min(2, len(filtered_extras)))
+
+        # Build the final hashtag string
+        all_hashtags = [hashtag] + selected_extras
+        tweet_text += "\n\n" + " ".join(all_hashtags)
+
 
         try:
             client.create_tweet(text=tweet_text)
