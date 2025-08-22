@@ -54,7 +54,7 @@ for i, row in enumerate(data):
         filtered_extras = list(set(extras) - {hashtag})
 
         # Randomly select up to 2 extras (if available)
-        selected_extras = random.sample(filtered_extras, k=min(2, len(filtered_extras)))
+        selected_extras = random.sample(filtered_extras, k=min(3, len(filtered_extras)))
 
         # Build the final hashtag string
         all_hashtags = [hashtag] + selected_extras
