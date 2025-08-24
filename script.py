@@ -60,7 +60,7 @@ for i, row in enumerate(data):
             selected_extras = ""  # If less than 2 available, use nothing
 
         # Always include the main hashtag
-        all_hashtags = [hashtag] + selected_extras
+        all_hashtags = [str(hashtag)] + [str(tag) for tag in selected_extras]
 
         tweet_text += "\n\n" + " ".join(all_hashtags)
 
