@@ -43,24 +43,34 @@ sheet = gc.open("tweet_sheet").sheet1
 # Fetch all rows as dictionaries
 data = sheet.get_all_records()
 
+# Flatten and clean all extras from all rows
+all_extras_global = [
+    tag.strip()
+    for row in data
+    for tag in row.get("Extra", "").split(",")
+    if tag.strip()
+]
+
+# Remove duplicates
+all_extras_global = list(set(all_extras_global))
+
 # Loop through rows to find the next unposted tweet
 for i, row in enumerate(data):
     if str(row["Posted"]).strip().upper() != "TRUE":
         tweet_text = row["Tweet Text"]
-        hashtag = row.get("Hashtags", "")
-        extras = [tag.strip() for tag in row.get("Extra", "").split(",") if tag.strip()]
+        hashtag = row.get("Hashtags", "").strip()
 
         # Remove the main hashtag from extras to avoid duplication
-        filtered_extras = list(set(extras) - {hashtag})
+        filtered_extras = list(set(all_extras_global) - {hashtag})
 
         # Randomly select exactly 2 extras if possible
         if len(filtered_extras) >= 2:
             selected_extras = random.sample(filtered_extras, k=2)
         else:
-            selected_extras = ""  # If less than 2 available, use nothing
+            selected_extras = []  # If less than 2 available, use nothing
 
         # Always include the main hashtag
-        all_hashtags = [str(hashtag)] + [str(tag) for tag in selected_extras]
+        all_hashtags = [hashtag] + selected_extras
 
         tweet_text += "\n\n" + " ".join(all_hashtags)
 
