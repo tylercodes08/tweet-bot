@@ -6,15 +6,11 @@ import os, json
 from dotenv import load_dotenv
 import time
 
+max_delay_seconds = 3 * 3600
+delay = random.randint(0, max_delay_seconds)
 
-# Random minute within the hour (0–59)
-random_minute = random.randint(0, 59)
-
-# Wait until that minute before posting
-current_minute = time.gmtime().tm_min
-sleep_seconds = (random_minute - current_minute) * 60
-if sleep_seconds > 0:
-    time.sleep(sleep_seconds)
+print(f"Sleeping for {delay // 60} minutes and {delay % 60} seconds...")
+time.sleep(delay)
 
 # Load Twitter API credentials from environment variables
 load_dotenv()
